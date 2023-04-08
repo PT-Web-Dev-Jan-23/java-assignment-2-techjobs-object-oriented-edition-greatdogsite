@@ -1,6 +1,9 @@
 package org.launchcode.techjobs.oo;
 
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class Job {
 
@@ -14,8 +17,8 @@ public class Job {
     private CoreCompetency coreCompetency;
 
     // -done TODO: Add two constructors - one to initialize a unique ID and a second to initialize the
-    // -done Tother five fields. The second constructor should also call the first in order to initialize
-    // -done Tthe 'id' field.
+    // -done other five fields. The second constructor should also call the first in order to initialize
+    // -done the 'id' field.
     public Job() {
         this.id = nextId;
         nextId++;
@@ -28,6 +31,52 @@ public class Job {
         this.location = aLocation;
         this.positionType = aPositionType;
         this.coreCompetency = aCoreCompetency;
+    }
+
+    // -done TODO: Add toString() method that passes tests
+    @Override
+    public String toString() {
+        LinkedHashMap<String, Object> hashMap = new LinkedHashMap<>(); //LinkedHashMap preserves order which is useful for printing
+        //add data to hashMap
+        hashMap.put("ID", this.id);
+        hashMap.put("Name", this.name);
+        hashMap.put("Employer", this.employer);
+        hashMap.put("Location", this.location);
+        hashMap.put("Position Type", this.positionType);
+        hashMap.put("Core Competency", this.coreCompetency);
+
+        //bonus, return early if job not present
+        int count = 0;
+        for (Map.Entry<String, Object> item : hashMap.entrySet()) {
+            if (item.getKey() == "ID") {
+            } else if (item.getKey() == "Name") {
+            } else if (item.toString().contains("=null")) {
+                count++;
+            }
+        }
+        if (count >= hashMap.size() - 2) {
+            return "OOPS! This job does not seem to exist.";
+        }
+        //loop data in hashMap and build String
+        String returnString = "\n";
+        for (Map.Entry<String, Object> item : hashMap.entrySet()) {
+            returnString += item.getKey() + ": ";
+            if (item.toString().contains("=null")) { //a bit hacky
+                returnString += "Data not available\n";
+            } else {
+                returnString += item.getValue() + "\n";
+            }
+
+        }
+        return returnString;
+//        return "\n" +
+//                "ID: " + this.id + "\n" +
+//                "Name: " + this.name + "\n" +
+//                "Employer: " + this.employer + "\n" +
+//                "Location: " + this.location + "\n" +
+//                "Position Type: " + this.positionType + "\n" +
+//                "Core Competency: " + this.coreCompetency +
+//                "\n";
     }
 
     // -done TODO: Add custom equals and hashCode methods. Consider two Job objects "equal" when their id fields
@@ -92,4 +141,16 @@ public class Job {
     public void setCoreCompetency(CoreCompetency coreCompetency) {
         this.coreCompetency = coreCompetency;
     }
+
+    public boolean isNullOrEmpty(Object o) {
+        if (o.toString().contains("=null")) {
+            return true;
+        }
+        if (o.toString() == "") {
+            return true;
+        }
+        return false;
+    }
+
+
 }

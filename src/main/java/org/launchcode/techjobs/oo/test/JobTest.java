@@ -1,6 +1,7 @@
 package org.launchcode.techjobs.oo.test;
 
 import org.junit.Test;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -48,4 +49,51 @@ public class JobTest {
         assertFalse(job1.getId() == job2.getId());
     }
 
+    @Test
+    public void testToStringStartsAndEndsWithNewLine() {
+        Job job1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String string = job1.toString();
+        assertEquals(string.charAt(0), '\n'); //first character
+        assertEquals(string.charAt(string.length() - 1), '\n'); //last character
+    }
+
+    @Test
+    public void testToStringContainsCorrectLabelsAndData() {
+        Job job1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String string = job1.toString();
+        Integer id = job1.getId(); //need to learn how to clear objects after each test
+        String testString = "\n" +
+                "ID: " + id + "\n" +
+                "Name: " + "Product tester" + "\n" +
+                "Employer: " + "ACME" + "\n" +
+                "Location: " + "Desert" + "\n" +
+                "Position Type: " + "Quality control" + "\n" +
+                "Core Competency: " + "Persistence" +
+                "\n";
+        assertEquals(testString, string);
+    }
+
+    @Test
+    public void testToStringHandlesEmptyField() {
+        Job job1 = new Job("Product tester", new Employer(), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String string = job1.toString();
+        Integer id = job1.getId(); //need to learn how to clear objects after each test
+        String testString = "\n" +
+                "ID: " + id + "\n" +
+                "Name: " + "Product tester" + "\n" +
+                "Employer: " + "Data not available" + "\n" +
+                "Location: " + "Desert" + "\n" +
+                "Position Type: " + "Quality control" + "\n" +
+                "Core Competency: " + "Persistence" +
+                "\n";
+        assertEquals(testString, string);
+    }
+
+    @Test
+    public void testToStringHandlesAllEmptyFields() {
+        Job job1 = new Job("", new Employer(), new Location(), new PositionType(), new CoreCompetency());
+        String string = job1.toString();
+        String testString = "OOPS! This job does not seem to exist.";
+        assertEquals(testString, string);
+    }
 }
