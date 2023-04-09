@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
+import org.launchcode.techjobs.oo.*;
+
 public class Job {
 
     private int id;
@@ -48,6 +50,13 @@ public class Job {
         //bonus, return early if job not present
         int count = 0;
         for (Map.Entry<String, Object> item : hashMap.entrySet()) {
+//            if (item.getValue() instanceof Employer) { // this is an example of type casting in order to get a null value instead of printing it to a string.
+//                Employer employerObject = (Employer) item.getValue();  // feels like a lot of extra code for not much benefit
+//                System.out.println(Objects.isNull(item.getValue())); //false
+//                System.out.println(item.getValue()); //null
+//                System.out.println(employerObject.isNullOrEmpty()); //true
+//            }
+
             if (item.getKey() == "ID") {
             } else if (item.getKey() == "Name") {
             } else if (item.toString().contains("=null")) {
@@ -61,7 +70,7 @@ public class Job {
         String returnString = "\n";
         for (Map.Entry<String, Object> item : hashMap.entrySet()) {
             returnString += item.getKey() + ": ";
-            if (item.toString().contains("=null")) { //a bit hacky
+            if (item.toString().contains("=null")) { //a bit hacky, but used to avoid casting all types to access null value
                 returnString += "Data not available\n";
             } else {
                 returnString += item.getValue() + "\n";
@@ -69,7 +78,7 @@ public class Job {
 
         }
         return returnString;
-//        return "\n" +
+//        return "\n" +   // manual string
 //                "ID: " + this.id + "\n" +
 //                "Name: " + this.name + "\n" +
 //                "Employer: " + this.employer + "\n" +
@@ -142,7 +151,7 @@ public class Job {
         this.coreCompetency = coreCompetency;
     }
 
-    public boolean isNullOrEmpty(Object o) {
+    public static boolean isNullOrEmpty(Object o) {
         if (o.toString().contains("=null")) {
             return true;
         }
