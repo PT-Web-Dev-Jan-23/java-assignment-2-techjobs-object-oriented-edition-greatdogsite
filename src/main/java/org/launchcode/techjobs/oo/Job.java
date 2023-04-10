@@ -38,10 +38,9 @@ public class Job {
     // -done TODO: Add toString() method that passes tests
     @Override
     public String toString() {
-        LinkedHashMap<String, Object> hashMap = new LinkedHashMap<>(); //LinkedHashMap preserves order which is useful for printing
+        LinkedHashMap<String, JobField> hashMap = new LinkedHashMap<>(); //LinkedHashMap preserves order which is useful for printing
+
         //add data to hashMap
-        hashMap.put("ID", this.id);
-        hashMap.put("Name", this.name);
         hashMap.put("Employer", this.employer);
         hashMap.put("Location", this.location);
         hashMap.put("Position Type", this.positionType);
@@ -49,35 +48,76 @@ public class Job {
 
         //bonus, return early if job not present
         int count = 0;
-        for (Map.Entry<String, Object> item : hashMap.entrySet()) {
-//            if (item.getValue() instanceof Employer) { // this is an example of type casting in order to get a null value instead of printing it to a string.
-//                Employer employerObject = (Employer) item.getValue();  // feels like a lot of extra code for not much benefit
-//                System.out.println(Objects.isNull(item.getValue())); //false
-//                System.out.println(item.getValue()); //null
-//                System.out.println(employerObject.isNullOrEmpty()); //true
-//            }
-
-            if (item.getKey() == "ID") {
-            } else if (item.getKey() == "Name") {
-            } else if (item.toString().contains("=null")) {
+        if (this.name == "" || this.name == null) {
+            count++;
+        }
+        for (Map.Entry<String, JobField> item : hashMap.entrySet()) {
+            if (item.getValue().isNullOrEmpty()) {
                 count++;
             }
         }
-        if (count >= hashMap.size() - 2) {
+        if (count == hashMap.size() + 1) {
             return "OOPS! This job does not seem to exist.";
         }
+
         //loop data in hashMap and build String
-        String returnString = "\n";
-        for (Map.Entry<String, Object> item : hashMap.entrySet()) {
+        String returnString = "\nID: " + this.id + "\n";
+        if (this.name != "" && this.name != null) {
+            returnString += "Name: " + this.name + "\n";
+        } else {
+            returnString += "Name: Data not available \n";
+        }
+        for (Map.Entry<String, JobField> item : hashMap.entrySet()) {
             returnString += item.getKey() + ": ";
-            if (item.toString().contains("=null")) { //a bit hacky, but used to avoid casting all types to access null value
+            if (item.getValue().isNullOrEmpty()) {
                 returnString += "Data not available\n";
             } else {
                 returnString += item.getValue() + "\n";
             }
-
         }
         return returnString;
+
+//-------------UPDATED WITH A BIT CLEANER CODE. WOULD HAVE BEEN EASIER IF ALL SAVED DATA HAD THEIR OWN CLASS.--------------------------
+//        LinkedHashMap<String, Object> hashMap = new LinkedHashMap<>(); //LinkedHashMap preserves order which is useful for printing
+//        //add data to hashMap
+//        hashMap.put("ID", this.id);
+//        hashMap.put("Name", this.name);
+//        hashMap.put("Employer", this.employer);
+//        hashMap.put("Location", this.location);
+//        hashMap.put("Position Type", this.positionType);
+//        hashMap.put("Core Competency", this.coreCompetency);
+//
+//        //bonus, return early if job not present
+//        int count = 0;
+//        for (Map.Entry<String, Object> item : hashMap.entrySet()) {
+////            if (item.getValue() instanceof Employer) { // this is an example of type casting in order to get a null value instead of printing it to a string.
+////                Employer employerObject = (Employer) item.getValue();  // feels like a lot of extra code for not much benefit
+////                System.out.println(Objects.isNull(item.getValue())); //false
+////                System.out.println(item.getValue()); //null
+////                System.out.println(employerObject.isNullOrEmpty()); //true
+////            }
+//
+//            if (item.getKey() == "ID") {
+//            } else if (item.getKey() == "Name") {
+//            } else if (item.toString().contains("=null")) {
+//                count++;
+//            }
+//        }
+//        if (count >= hashMap.size() - 2) {
+//            return "OOPS! This job does not seem to exist.";
+//        }
+//        //loop data in hashMap and build String
+//        String returnString = "\n";
+//        for (Map.Entry<String, Object> item : hashMap.entrySet()) {
+//            returnString += item.getKey() + ": ";
+//            if (item.toString().contains("=null")) { //a bit hacky, but used to avoid casting all types to access null value
+//                returnString += "Data not available\n";
+//            } else {
+//                returnString += item.getValue() + "\n";
+//            }
+//
+//        }
+//        return returnString;
 //        return "\n" +   // manual string
 //                "ID: " + this.id + "\n" +
 //                "Name: " + this.name + "\n" +
